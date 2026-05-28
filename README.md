@@ -12,32 +12,32 @@ The following diagram illustrates the end-to-end flow of the project, spanning l
 graph TD
     %% Dataset Prep Phase
     subgraph Data Processing Pipeline
-        A["RadioML 2018.01A Dataset (HDF5)"] -->|prepare_rml2018.py| B["SNR Filtering & Stratification"]
+        A["RadioML 2018.01A Dataset"] -->|prepare_rml2018.py| B["SNR Filtering & Stratification"]
         B --> C["z-Score Normalization Statistics"]
-        B --> D["Splitting (70% Train, 15% Val, 15% Test)"]
-        D -->|Save NumPy Index Files| E["data/ (*_indices.npy, labels, SNRs)"]
+        B --> D["Splitting - 70/15/15"]
+        D -->|Save NumPy Index Files| E["data/ Folder"]
     end
 
     %% Model Architectures
     subgraph Model Training Suite
         E -->|Raw 1D IQ Sequence| F["train_1d_cnn.py"]
         E -->|STFT Spectrogram Conversion| G["train_2d_cnn.py"]
-        F -->|Extracts 1D Feature Vectors| H["train_hybrid.py (Fusion Head)"]
+        F -->|Extracts 1D Feature Vectors| H["train_hybrid.py Fusion Head"]
         G -->|Extracts 2D Spectrogram Features| H
-        H -->|Best Models Saved| I["models/ (*_best.pth)"]
+        H -->|Best Models Saved| I["models/ Folder"]
     end
 
     %% Inference & Streaming Phase
     subgraph Deployment & Visualization
-        I -->|PyTorch Weight Checkpoints| J["gui.py (Dark-Theme Desktop App)"]
+        I -->|PyTorch Weight Checkpoints| J["gui.py Desktop App"]
         I -->|ONNX Compile Graph| K["export_onnx.py"]
         
         subgraph Real-Time Socket Stream
-            L["sdr_simulator.py (Fading + Offset + Noise)"] -->|TCP Stream (Port 5000)| M["inference.py (Pi/Server Receiver)"]
+            L["sdr_simulator.py Simulator"] -->|TCP Stream| M["inference.py Receiver"]
         end
         
         M -->|Load Weights & Predict| N["Real-time Console Diagnostics"]
-        J -->|Load Signal / Live Predict| O["Matplotlib Probabilities Display"]
+        J -->|Load Signal & Predict| O["Matplotlib Probabilities Display"]
     end
 
     classDef stage fill:#1a1a2e,stroke:#7c3aed,stroke-width:2px,color:#e2e8f0;
