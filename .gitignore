@@ -1,0 +1,51 @@
+# ==============================================================================
+# Git Ignore Configuration - RF Modulation Classifier (Core Code Private)
+# ==============================================================================
+
+# Python runtime and build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE / Editor configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large processed datasets and indices
+data/*.npy
+
+# Preprocessed metadata we do NOT want to ignore (uncomment if you want to push schemas)
+# !data/*.json
+
+# Large model checkpoints and weights
+models/
+*.pth
+*.onnx
+
+# Temporary drafts and testing scripts
+tst.py
+
+# ==============================================================================
+# PRIVATE CORE IMPLEMENTATION CODE - EXCLUDE FROM GITHUB RELEASE
+# ==============================================================================
+prepare_rml2018.py
+train_1d_cnn.py
+train_2d_cnn.py
+train_hybrid.py
+run_pipeline.py
+export_onnx.py
+gui.py
+inference.py
+sdr_simulator.py
